@@ -1,8 +1,11 @@
 package com.skyapi.weatherforecast.location;
 
 import java.net.URI;
+import java.util.List;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,14 +26,42 @@ public class LocationApiController {
 		this.locationService = locationService;
 	}
 
+	
+	
 	@PostMapping
 	public ResponseEntity<Location> addLocation(@RequestBody @Valid Location location) {
-		
+
 		Location addedLocation = locationService.add(location);
-		URI uri = URI.create("/v1/locations/"  + location.getCode());
-		
-		return ResponseEntity.created(uri)
+		URI uri = URI.create("/v1/locations/" + location.getCode());
+
+		return ResponseEntity
+				            .created(uri)
 				            .body(addedLocation);
 	}
+
+	
+	@GetMapping
+	public ResponseEntity<?> listLocation() {
+
+		List<Location> locations = locationService.list();
+
+		if (locations.isEmpty()) {
+			return ResponseEntity.noContent().build();
+		}
+		return ResponseEntity.ok(locations);
+	}
+	
+	
+	@GetMapping("/{code}")
+	public ResponseEntity <?> getLocation(@PathVariable("code") String code){
+		
+	  Location location =	locationService.get(code);
+		
+	  if(location == null) {
+		 return ResponseEntity.notFound().build(); 
+	  }
+	  return ResponseEntity.ok(location);
+	}
+	
 
 }

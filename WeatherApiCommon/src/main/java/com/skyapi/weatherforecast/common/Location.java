@@ -20,22 +20,22 @@ public class Location {
 	@NotBlank
 	private String code;
 
-	@Column(nullable = false, length = 125)
+	@Column(name="city_name",nullable = false, length = 125)
 	@JsonProperty("city_name")
 	@NotBlank
 	private String cityName;
 
-	@Column(length = 128)
+	@Column(name= "region_name",length = 128)
 	@JsonProperty("region_name")
 	@NotBlank
 	private String regionName;
 
-	@Column(length = 64, nullable = false)
+	@Column(name= "country_name",length = 64, nullable = false)
 	@JsonProperty("country_name")
 	@NotBlank
 	private String countryName;
 
-	@Column(length = 2, nullable = false)
+	@Column(name="country_code",length = 2, nullable = false)
 	@JsonProperty("country_code")
 	@NotBlank
 	private String countryCode;
@@ -65,6 +65,12 @@ public class Location {
 	}
 	
 	
+
+	@Override
+	public String toString() {
+		return "Location [code=" + code + ", cityName=" + cityName + ", regionName=" + regionName + ", countryName="
+				+ countryName + ", countryCode=" + countryCode + ", enabled=" + enabled + ", trashed=" + trashed + "]";
+	}
 
 	public String getCode() {
 		return code;

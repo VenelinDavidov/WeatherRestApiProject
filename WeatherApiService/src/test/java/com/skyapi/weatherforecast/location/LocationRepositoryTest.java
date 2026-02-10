@@ -2,6 +2,8 @@ package com.skyapi.weatherforecast.location;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import java.util.List;
+
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
@@ -15,10 +17,10 @@ import com.skyapi.weatherforecast.common.Location;
 @AutoConfigureTestDatabase(replace = Replace.NONE)
 @Rollback(false)
 public class LocationRepositoryTest {
-	
+
 	@Autowired
 	private LocationRepository repository;
-	
+
 	@Test
 	public void testAddSucsess() {
 		Location location = new Location();
@@ -28,14 +30,40 @@ public class LocationRepositoryTest {
 		location.setCountryCode("US");
 		location.setCountryName("USA");
 		location.setEnabled(true);
-   
+
+		Location savedLocation = repository.save(location);
+
+		assertThat(savedLocation).isNotNull();
+		assertThat(savedLocation.getCode()).isEqualTo("NYC_USA");
+
+	}
+
+	@Test
+	public void testListSuccess() {
+
+		List<Location> location = repository.findUntrashed();
+		assertThat(location).isNotEmpty();
+		location.forEach(System.out::println);
+	}
+
+	@Test
+	public void testGetNotFound() {
 		
-	Location savedLocation = repository.save(location); 
+		String code = "ABCD";
+		Location location = repository.findByCode(code);
+		
+		assertThat(location).isNull();
+	}
 	
-	assertThat(savedLocation).isNotNull();
-	assertThat(savedLocation.getCode()).isEqualTo("NYC_USA");
 	
-	
+	@Test
+	public void testGetCodeFound() {
+		
+		String code = "DELHI_IN";
+		Location location = repository.findByCode(code);
+		assertThat(location).isNotNull();
+		assertThat(location.getCode()).isEqualTo(code);
+		
 	}
 
 }
