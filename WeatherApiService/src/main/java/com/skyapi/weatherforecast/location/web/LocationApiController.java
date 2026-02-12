@@ -1,8 +1,10 @@
-package com.skyapi.weatherforecast.location;
+package com.skyapi.weatherforecast.location.web;
 
 import java.net.URI;
 import java.util.List;
 
+import com.skyapi.weatherforecast.location.exceptions.LocationNotFoundException;
+import com.skyapi.weatherforecast.location.service.LocationService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;

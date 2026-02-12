@@ -14,6 +14,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import java.util.Collections;
 import java.util.List;
 
+import com.skyapi.weatherforecast.location.exceptions.LocationNotFoundException;
+import com.skyapi.weatherforecast.location.service.LocationService;
+import com.skyapi.weatherforecast.location.web.LocationApiController;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -171,7 +174,7 @@ public class LocationApiControllerTest {
 		location.setCountryName("USA");
 		location.setEnabled(true);
 		
-		Mockito.when(service.update(location)).thenThrow(new LocationNotFoundException("Not found Location"));
+		Mockito.when(service.update(location)).thenThrow(new LocationNotFoundException ("Not found Location"));
 		
 		String bodyContend = mapper.writeValueAsString(location);
 		
