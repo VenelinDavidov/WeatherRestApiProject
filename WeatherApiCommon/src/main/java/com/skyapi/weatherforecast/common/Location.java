@@ -35,7 +35,7 @@ public class Location {
 	@NotBlank
 	private String countryName;
 
-	@Column(name="country_code",length = 2, nullable = false)
+	@Column(name="country_code",length = 20, nullable = false)
 	@JsonProperty("country_code")
 	@NotBlank
 	private String countryCode;
