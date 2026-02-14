@@ -4,11 +4,13 @@ import java.util.List;
 
 import com.skyapi.weatherforecast.location.exceptions.LocationNotFoundException;
 import com.skyapi.weatherforecast.location.repository.LocationRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import com.skyapi.weatherforecast.common.Location;
 
 @Service
+@Transactional
 public class LocationService {
 
 	private LocationRepository repo;

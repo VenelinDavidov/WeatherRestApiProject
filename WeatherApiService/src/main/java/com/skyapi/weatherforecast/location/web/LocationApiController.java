@@ -31,6 +31,8 @@ public class LocationApiController {
 	}
 	
 
+	
+	
 	@PostMapping
 	public ResponseEntity<Location> addLocation(@RequestBody @Valid Location location) {
 
