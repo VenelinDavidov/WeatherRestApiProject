@@ -17,36 +17,32 @@ public class Location {
 
 	@Column(nullable = false, unique = true, length = 12)
 	@Id
-	@NotBlank
+	@NotBlank(message = "Location code cannot be left blank!")
 	private String code;
 
-	@Column(name="city_name",nullable = false, length = 125)
+	@Column(name = "city_name", nullable = false, length = 125)
 	@JsonProperty("city_name")
-	@NotBlank
+	@NotBlank(message = "City name cannot be blank!")
 	private String cityName;
 
-	@Column(name= "region_name",length = 128)
+	@Column(name = "region_name", length = 128)
 	@JsonProperty("region_name")
-	@NotBlank
 	private String regionName;
 
-	@Column(name= "country_name",length = 64, nullable = false)
+	@Column(name = "country_name", length = 64, nullable = false)
 	@JsonProperty("country_name")
-	@NotBlank
+	@NotBlank(message = "Country name cannot be blanck!")
 	private String countryName;
 
-	@Column(name="country_code",length = 20, nullable = false)
+	@Column(name = "country_code", length = 20, nullable = false)
 	@JsonProperty("country_code")
-	@NotBlank
+	@NotBlank(message = "Country code cannot be blank!")
 	private String countryCode;
 
-	
 	private boolean enabled;
 	@JsonIgnore
 	private boolean trashed;
-	
-	
-	
+
 	@Override
 	public int hashCode() {
 		return Objects.hash(code);
@@ -63,8 +59,6 @@ public class Location {
 		Location other = (Location) obj;
 		return Objects.equals(code, other.code);
 	}
-	
-	
 
 	@Override
 	public String toString() {
