@@ -2,6 +2,7 @@ package com.skyapi.weatherforecast.location.service;
 
 import java.io.IOException;
 
+import com.skyapi.weatherforecast.location.exceptions.GeoLocationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -29,7 +30,7 @@ public class GeoLocationService {
 	
 	
 	
-	public Location getLocation(String ipAddress) throws GeoLocationException  {
+	public Location getLocation(String ipAddress) throws GeoLocationException {
 		
 		try {
 			IPResult result = ipLocator.IPQuery(ipAddress);

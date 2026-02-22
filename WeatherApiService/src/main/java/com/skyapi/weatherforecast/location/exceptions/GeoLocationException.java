@@ -1,4 +1,4 @@
-package com.skyapi.weatherforecast.location.service;
+package com.skyapi.weatherforecast.location.exceptions;
 
 public class GeoLocationException extends Exception {
 
