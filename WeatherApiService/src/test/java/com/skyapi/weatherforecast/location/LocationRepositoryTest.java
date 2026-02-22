@@ -58,6 +58,8 @@ public class LocationRepositoryTest {
 		assertThat(location).isNull();
 	}
 
+	
+	
 	@Test
 	public void testGetCodeFound() {
 		
@@ -67,6 +69,7 @@ public class LocationRepositoryTest {
 		assertThat(location.getCode()).isEqualTo(code);
 	}
 	
+	
 	@Test
 	public void testTrashSuccess() {
 		
@@ -75,6 +78,7 @@ public class LocationRepositoryTest {
 	    Location location = repository.findByCode(code);
 	    assertThat(location).isNull();
 	}
+	
 	
 	@Test
 	public void testAddRealtimeWeatherData() {
