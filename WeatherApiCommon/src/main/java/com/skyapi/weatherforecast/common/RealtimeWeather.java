@@ -34,7 +34,7 @@ public class RealtimeWeather {
 	
 	
 	
-	
+
 	public String getLocationCode() {
 		return locationCode;
 	}

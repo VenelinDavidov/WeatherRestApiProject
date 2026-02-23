@@ -18,9 +18,8 @@ public class GeoLocationService {
 	private String DBPath = "ip2locdb/IP2LOCATION-LITE-DB3.BIN";
 	private IP2Location ipLocator = new IP2Location();
 
-	
 	public GeoLocationService() {
-		
+
 		try {
 			ipLocator.Open(DBPath);
 		} catch (IOException e) {
@@ -28,23 +27,23 @@ public class GeoLocationService {
 		}
 	}
 	
-	
-	
+	 
+
 	public Location getLocation(String ipAddress) throws GeoLocationException {
-		
+
 		try {
 			IPResult result = ipLocator.IPQuery(ipAddress);
-			
-			if(!"OK".equals(result.getStatus())) {
+
+			if (!"OK".equals(result.getStatus())) {
 				throw new GeoLocationException("GeoLocation failed with status:" + result.getStatus());
 			}
-			
-			return new Location(result.getCity(), result.getRegion(), result.getCountryLong(), result.getCountryShort());
-			
+
+			return new Location(result.getCity(), result.getRegion(), result.getCountryLong(),result.getCountryShort());
+
 		} catch (IOException e) {
 			throw new GeoLocationException("Error quering IP Database", e);
 		}
-		
+
 	}
-	
+
 }

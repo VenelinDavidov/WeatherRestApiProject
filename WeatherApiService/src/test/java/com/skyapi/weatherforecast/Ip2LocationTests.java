@@ -27,6 +27,7 @@ public class Ip2LocationTests {
 	}
 	
 	
+	
 	@Test
 	public void testValidIp1() throws IOException {
 		IP2Location ipLocator = new IP2Location();
