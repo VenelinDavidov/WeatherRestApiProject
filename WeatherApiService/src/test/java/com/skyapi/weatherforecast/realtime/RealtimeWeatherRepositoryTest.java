@@ -1,9 +1,10 @@
-package com.skyapi.weatherforecast.realtime;
+	package com.skyapi.weatherforecast.realtime;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.Date;
 
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
@@ -60,6 +61,34 @@ public class RealtimeWeatherRepositoryTest {
 		assertThat(realtimeWeather).isNotNull();
 		assertThat(realtimeWeather.getLocation().getCityName()).isEqualTo(cityName);
 				
+	}
+	
+	
+	@Test 
+	public void testFindByLocationNotFound() {
+		String locationCode = "ABCXH";
+		RealtimeWeather realtimeWeather = repo.findByLocationCode(locationCode);
+		
+		assertThat(realtimeWeather).isNull();
+	
+	}
+	
+	@Test 
+	public void testFindByTrashedLocationNotFound() {
+		String locationCode = "NYC_USA";
+		RealtimeWeather realtimeWeather = repo.findByLocationCode(locationCode);
+		
+		assertThat(realtimeWeather).isNull();
+	
+	}
+	
+	@Test 
+	public void testFindByLocationFound() {
+		String locationCode = "NYC_USA";
+		RealtimeWeather realtimeWeather = repo.findByLocationCode(locationCode);
+		
+		assertThat(realtimeWeather).isNotNull();
+	    assertThat(realtimeWeather.getLocationCode()).isEqualTo(locationCode);
 	}
 	
 }

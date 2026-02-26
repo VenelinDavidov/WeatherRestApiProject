@@ -65,6 +65,7 @@ public class LocationApiControllerTest {
 		Mockito.when(service.add(location)).thenReturn(location);
 		String bodyContend = mapper.writeValueAsString(location);
 
+		
 		mockMvc.perform(post(END_POINT_PATH).contentType("application/json").content(bodyContend))
 				.andExpect(status().isCreated()).andExpect(content().contentType("application/json"))
 				.andExpect(jsonPath("$.code", is("NYC_USA")))

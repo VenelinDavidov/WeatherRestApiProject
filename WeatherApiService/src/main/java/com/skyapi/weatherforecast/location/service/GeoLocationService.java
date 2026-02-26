@@ -2,7 +2,6 @@ package com.skyapi.weatherforecast.location.service;
 
 import java.io.IOException;
 
-import com.skyapi.weatherforecast.location.exceptions.GeoLocationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -10,6 +9,7 @@ import org.springframework.stereotype.Service;
 import com.ip2location.IP2Location;
 import com.ip2location.IPResult;
 import com.skyapi.weatherforecast.common.Location;
+import com.skyapi.weatherforecast.location.exceptions.GeoLocationException;
 
 @Service
 public class GeoLocationService {
