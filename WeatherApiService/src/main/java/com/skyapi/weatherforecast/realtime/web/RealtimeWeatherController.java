@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -21,6 +23,7 @@ import com.skyapi.weatherforecast.realtime.web.dto.RealtimeWeatherDTO;
 import com.skyapi.weatherforecast.utility.CommonUtility;
 
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/v1/realtime")
@@ -75,4 +78,25 @@ public class RealtimeWeatherController {
 			return ResponseEntity.notFound().build();
 		}
 	}
+	
+	
+	
+	@PutMapping("/{locationCode}")
+	public ResponseEntity<?> updateRealtimeWeather(@PathVariable("locationCode") String locationCode, 
+			                                       @RequestBody() @Valid RealtimeWeather realtimeWeatherRequest) {
+		
+		realtimeWeatherRequest.setLocationCode(locationCode);
+		try {
+			RealtimeWeather updatedRealtimeWeather = realtimeWeatherService.update(locationCode, realtimeWeatherRequest);
+            RealtimeWeatherDTO dto = modelMapper.map(updatedRealtimeWeather, RealtimeWeatherDTO.class);
+			
+			return ResponseEntity.ok(dto);
+			
+		} catch (LocationNotFoundException e) {
+			return ResponseEntity.notFound().build();
+		}
+	}
+	
+	
+	
 }
