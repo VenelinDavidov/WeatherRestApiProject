@@ -142,6 +142,4 @@ public class RealtimeWeather {
 		this.locationCode = location.getCode();
 		this.location = location;
 	}
-	
-	
 }

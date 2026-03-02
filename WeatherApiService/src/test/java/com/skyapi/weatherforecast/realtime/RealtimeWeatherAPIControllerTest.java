@@ -266,6 +266,5 @@ public class RealtimeWeatherAPIControllerTest {
 		       .andExpect(status().isOk())
 		       .andExpect(jsonPath("$.location", is(expectedLocation)))
 		       .andDo(print());
-	}
-		
+	}	
 }

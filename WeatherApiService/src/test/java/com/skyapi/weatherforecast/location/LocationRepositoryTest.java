@@ -13,6 +13,7 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.annotation.Rollback;
 
+import com.skyapi.weatherforecast.common.HourlyWeather;
 import com.skyapi.weatherforecast.common.Location;
 import com.skyapi.weatherforecast.common.RealtimeWeather;
 
@@ -27,9 +28,9 @@ public class LocationRepositoryTest {
 	@Test
 	public void testAddSucsess() {
 		Location location = new Location();
-		location.setCode("NYC_USA");
-		location.setCityName("New York City");
-		location.setRegionName("New York");
+		location.setCode("NYC_MI");
+		location.setCityName("Miammi");
+		location.setRegionName("Aloha");
 		location.setCountryCode("US");
 		location.setCountryName("USA");
 		location.setEnabled(true);
@@ -37,7 +38,7 @@ public class LocationRepositoryTest {
 		Location savedLocation = repository.save(location);
 
 		assertThat(savedLocation).isNotNull();
-		assertThat(savedLocation.getCode()).isEqualTo("NYC_USA");
+		assertThat(savedLocation.getCode()).isEqualTo("NYC_MI");
 
 	}
 
@@ -103,5 +104,31 @@ public class LocationRepositoryTest {
 		Location updatedLocation = repository.save(location);
 		assertThat(updatedLocation.getRealtimeWeather().getLocationCode()).isEqualTo(locationCode);
 	}
-
+	
+	@Test
+	public void testAddHourlyWeatherData() {
+		
+		Location location = repository.findById("NYC_MI").get();
+		
+		List<HourlyWeather> listHourlyWeather = location.getListHourlyWeather();
+		
+		HourlyWeather forecast1 = new HourlyWeather()
+				.id(location, 8)
+				.temperature(12)
+				.precipitation(12)
+				.status("Sunny");
+		
+		HourlyWeather forecast2 = new HourlyWeather()
+				.id(location, 9)
+				.temperature(14)
+				.precipitation(18)
+				.status("Cloudy");
+		
+		listHourlyWeather.add(forecast1);
+		listHourlyWeather.add(forecast2);
+		
+		Location updatedLocation = repository.save(location);
+		
+		assertThat(updatedLocation.getListHourlyWeather()).isNotEmpty();
+	}
 }

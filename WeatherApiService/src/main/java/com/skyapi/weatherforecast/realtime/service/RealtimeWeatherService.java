@@ -10,16 +10,18 @@ import com.skyapi.weatherforecast.location.exceptions.LocationNotFoundException;
 import com.skyapi.weatherforecast.location.repository.LocationRepository;
 import com.skyapi.weatherforecast.realtime.repository.RealtimeWeatherRepository;
 
+import jakarta.transaction.Transactional;
+
 @Service
 public class RealtimeWeatherService {
 	
-	private RealtimeWeatherRepository repository;
+	private RealtimeWeatherRepository realtimeWeatherRepository;
 	private LocationRepository locationRepository;
 
 	
 	public RealtimeWeatherService(RealtimeWeatherRepository repository, LocationRepository locationRepository) {
 		super();
-		this.repository = repository;
+		this.realtimeWeatherRepository = repository;
 		this.locationRepository = locationRepository;
 	}
 
@@ -29,7 +31,7 @@ public class RealtimeWeatherService {
 		String countryCode = location.getCountryCode();
 		String cityName = location.getCityName();
 		
-		RealtimeWeather realtimeWeather = repository.findByCountryCodeAndCity(countryCode, cityName);
+		RealtimeWeather realtimeWeather = realtimeWeatherRepository.findByCountryCodeAndCity(countryCode, cityName);
 		
 		if(realtimeWeather == null) {
 			throw new LocationNotFoundException("No location found with country code and city name");
@@ -42,7 +44,7 @@ public class RealtimeWeatherService {
 	
 	public RealtimeWeather getByLocationCode(String locationCode) throws LocationNotFoundException {
 		
-		RealtimeWeather realtimeWeather = repository.findByLocationCode(locationCode);
+		RealtimeWeather realtimeWeather = realtimeWeatherRepository.findByLocationCode(locationCode);
 		
 		if(realtimeWeather == null ) {
 			throw new LocationNotFoundException("No location found with given code: " + locationCode);
@@ -52,7 +54,7 @@ public class RealtimeWeatherService {
 	
 	
 	
-	
+	@Transactional
 	public RealtimeWeather update(String locationCode, RealtimeWeather realtimeWeather) throws LocationNotFoundException {
 		 
 		Location location = locationRepository.findByCode(locationCode);
@@ -71,7 +73,6 @@ public class RealtimeWeatherService {
 			return updatedLocation.getRealtimeWeather();
 		}
 		
-		return repository.save(realtimeWeather);
-		
+		return realtimeWeatherRepository.save(realtimeWeather);
 	}
 }
