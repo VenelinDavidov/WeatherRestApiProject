@@ -1,4 +1,4 @@
-package com.skyapi.weatherforecast.hourly_weather;
+package com.skyapi.weatherforecast.hourly_weather.repository;
 
 import org.springframework.data.repository.CrudRepository;
 
