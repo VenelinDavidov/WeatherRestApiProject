@@ -177,5 +177,9 @@ public class Location {
 		this.realtimeWeather = realtimeWeather;
 	}
  
+	public Location code (String code) {
+		setCode(code);
+		return this;
+	}
 	
 }

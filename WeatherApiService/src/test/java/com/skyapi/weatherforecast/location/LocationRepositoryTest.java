@@ -105,23 +105,25 @@ public class LocationRepositoryTest {
 		assertThat(updatedLocation.getRealtimeWeather().getLocationCode()).isEqualTo(locationCode);
 	}
 	
+	
+	
 	@Test
 	public void testAddHourlyWeatherData() {
 		
-		Location location = repository.findById("NYC_MI").get();
+		Location location = repository.findById("DELHI_IN").get();
 		
 		List<HourlyWeather> listHourlyWeather = location.getListHourlyWeather();
 		
 		HourlyWeather forecast1 = new HourlyWeather()
-				.id(location, 8)
-				.temperature(12)
-				.precipitation(12)
-				.status("Sunny");
+				.id(location, 10)
+				.temperature(-2)
+				.precipitation(0)
+				.status("Snowly");
 		
 		HourlyWeather forecast2 = new HourlyWeather()
-				.id(location, 9)
-				.temperature(14)
-				.precipitation(18)
+				.id(location, 11)
+				.temperature(-1)
+				.precipitation(2)
 				.status("Cloudy");
 		
 		listHourlyWeather.add(forecast1);
@@ -130,5 +132,30 @@ public class LocationRepositoryTest {
 		Location updatedLocation = repository.save(location);
 		
 		assertThat(updatedLocation.getListHourlyWeather()).isNotEmpty();
+	}
+	
+	
+	@Test
+	public void testFoundByCountryCodeAndCityNameNotFound() {
+		String countryCode = "BZ";
+		String cityName ="City";
+		
+		Location location = repository.findByCountryCodeAndCityName(countryCode, cityName);
+		
+		assertThat(location).isNull();
+	}
+	
+	
+	
+	@Test
+	public void testFoundByCountryCodeAndCityNameFound() {
+		String countryCode = "US";
+		String cityName ="New York City";
+		
+		Location location = repository.findByCountryCodeAndCityName(countryCode, cityName);
+		
+		assertThat(location).isNotNull();
+		assertThat(location.getCountryCode()).isEqualTo(countryCode);
+		assertThat(location.getCityName()).isEqualTo(cityName);
 	}
 }

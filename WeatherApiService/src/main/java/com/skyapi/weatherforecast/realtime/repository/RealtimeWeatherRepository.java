@@ -5,7 +5,7 @@ import org.springframework.data.repository.CrudRepository;
 
 import com.skyapi.weatherforecast.common.RealtimeWeather;
 
-public interface RealtimeWeatherRepository extends CrudRepository<RealtimeWeather,String> {
+public interface RealtimeWeatherRepository extends CrudRepository<RealtimeWeather, String> {
 
 	@Query("SELECT r FROM RealtimeWeather r " +
 		   "WHERE r.location.countryCode = ?1 "
