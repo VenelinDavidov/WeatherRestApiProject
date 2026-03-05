@@ -1,0 +1,50 @@
+package com.skyapi.weatherforecast.hourly_weather.web.dto;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+public class HourlyWeatherDto {
+
+	@JsonProperty("hour_of_day")
+	private int hourDay;
+	private int temperature;
+	private int precipitation;
+	private String status;
+
+	
+	
+	
+	
+
+	public int getHourDay() {
+		return hourDay;
+	}
+
+	public void setHourDay(int hourDay) {
+		this.hourDay = hourDay;
+	}
+
+	public int getTemperature() {
+		return temperature;
+	}
+
+	public void setTemperature(int temperature) {
+		this.temperature = temperature;
+	}
+
+	public int getPrecipitation() {
+		return precipitation;
+	}
+
+	public void setPrecipitation(int precipitation) {
+		this.precipitation = precipitation;
+	}
+
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
+	}
+
+}

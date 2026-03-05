@@ -9,6 +9,7 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.annotation.Rollback;
 import static org.assertj.core.api.Assertions.assertThat;
 
+import java.util.List;
 import java.util.Optional;
 
 import com.skyapi.weatherforecast.common.HourlyWeather;
@@ -31,6 +32,7 @@ public class HourlyWeatherRepositoryTest {
 		int hourOfDay = 14;
 		
 		Location location = new Location().code(locationCode);
+		
 		
 		HourlyWeather forecast = new HourlyWeather()
 				.id(location, hourOfDay)
@@ -57,4 +59,25 @@ public class HourlyWeatherRepositoryTest {
 		Optional<HourlyWeather> optionalResult = hourlyWeatherRepository.findById(id);
 		assertThat(optionalResult).isPresent();
 	}
+	
+	
+	@Test
+	public void testFindByLocationCodeFound(){
+		String lcoationCode = "DELHI_IN";
+		int currentHour = 10;
+		
+		List<HourlyWeather> hourlyForecast = hourlyWeatherRepository.findByLocationCode(lcoationCode, currentHour);
+		assertThat(hourlyForecast).isNotEmpty();
+	}
+	
+	@Test
+	public void testFindByLocationCodeNotFound(){
+		String lcoationCode = "ABD";
+		int currentHour = 8;
+		
+		List<HourlyWeather> hourlyForecast = hourlyWeatherRepository.findByLocationCode(lcoationCode, currentHour);
+		assertThat(hourlyForecast).isEmpty();
+	}
+	
+	
 }

@@ -29,18 +29,27 @@ public class HourlyWeatherID  implements Serializable{
 	}
 	
 	
+
+
+
 	public int getHourDay() {
 		return hourDay;
 	}
+
+
 	public void setHourDay(int hourDay) {
 		this.hourDay = hourDay;
 	}
+
+
 	public Location getLocation() {
 		return location;
 	}
 	public void setLocation(Location location) {
 		this.location = location;
 	}
+	
+	
 	
 	
 }
