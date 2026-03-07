@@ -28,22 +28,22 @@ public class HourlyWeatherRepositoryTest {
 	@Test
 	public void testAdd() {
 		
-		String locationCode = "NYC_MI";
-		int hourOfDay = 14;
+		String locationCode = "NYC_USA";
+		int hourOfDay = 10;
 		
 		Location location = new Location().code(locationCode);
 		
 		
 		HourlyWeather forecast = new HourlyWeather()
 				.id(location, hourOfDay)
-				.temperature(20)
-				.precipitation(30)
-				.status("Sunny");
+				.temperature(10)
+				.precipitation(25)
+				.status("Cloudy");
 		
 	   HourlyWeather updateForecast = hourlyWeatherRepository.save(forecast);
 	   
 	   assertThat(updateForecast.getId().getLocation().getCode()).isEqualTo(locationCode);
-	   assertThat(updateForecast.getId().getHourDay()).isEqualTo(hourOfDay);
+	   assertThat(updateForecast.getId().getHourOfDay()).isEqualTo(hourOfDay);
 
 	}
 	

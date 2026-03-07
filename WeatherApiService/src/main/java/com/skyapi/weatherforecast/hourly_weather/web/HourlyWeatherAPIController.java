@@ -3,8 +3,12 @@ package com.skyapi.weatherforecast.hourly_weather.web;
 import java.util.List;
 
 import org.modelmapper.ModelMapper;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -45,9 +49,9 @@ public class HourlyWeatherAPIController {
     	
     	try {
     		
-    		  int currenHour = Integer.parseInt(request.getHeader("X-Current-Hour"));
+    		  int currentHour = Integer.parseInt(request.getHeader("X-Current-Hour"));
     	      Location locationFromIp = locationService.getLocation(ipAddress);
-    	      List<HourlyWeather> hourlyForecast = hourlyWeatherService.getByLocation(locationFromIp, currenHour);
+    	      List<HourlyWeather> hourlyForecast = hourlyWeatherService.getByLocation(locationFromIp, currentHour);
     	      
     	      if(hourlyForecast.isEmpty()){
     	    	  return ResponseEntity.noContent().build();
@@ -67,6 +71,40 @@ public class HourlyWeatherAPIController {
     
     
     
+    @GetMapping("/{locationCode}")
+    public ResponseEntity<?> listHourlyWeatherForecastByLocationCode(@PathVariable("locationCode") String locationCode, 
+    		                                                                                HttpServletRequest request){
+    	try {
+        int currentHour = Integer.parseInt(request.getHeader("X-Current-Hour"));	
+    	List<HourlyWeather> hourlyForecast = hourlyWeatherService.getByLocationCode(locationCode, currentHour);
+    	
+    	if(hourlyForecast.isEmpty()) {
+    		return ResponseEntity.noContent().build();
+    	}
+     	
+     	return ResponseEntity.ok(listEntity2Dto(hourlyForecast));
+     	
+    	} catch (NumberFormatException ex) {
+    		
+    		return ResponseEntity.badRequest().build();
+    		
+    	} catch(LocationNotFoundException ex) {
+    		
+    		return ResponseEntity.notFound().build();
+    	}
+     }
+    
+    
+    @PutMapping("/locationCode")
+    public ResponseEntity<?> updateHourlyForecast(@PathVariable("code") String locationCode,
+    	@RequestBody List<HourlyWeatherDto> listDto){
+    	
+    	
+    	return ResponseEntity.accepted().build();
+    }
+    
+    
+ 
     
     private HourlyWeatherListDto listEntity2Dto (List<HourlyWeather> hourlyForecast) {
     	

@@ -8,7 +8,9 @@ import jakarta.servlet.http.HttpServletRequest;
 public class CommonUtility {
 
 	private static Logger LOGGER = LoggerFactory.getLogger(CommonUtility.class);
+	
 	private static final String X_FORWARED_FOR = "108.30.178.78";
+//	private static final String X_FORWARDED_FOR = "X-Forwarded-For";
 	
 	public static String getIPAddress(HttpServletRequest request) {
 		
@@ -21,6 +23,10 @@ public class CommonUtility {
 		LOGGER.info("Client's IP Adress: " + ip);
 		return ip;
 	}
+
+	
+	
+	
 }
 
 

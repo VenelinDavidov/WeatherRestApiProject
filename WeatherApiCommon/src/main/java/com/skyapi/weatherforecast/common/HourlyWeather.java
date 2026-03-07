@@ -20,8 +20,10 @@ public class HourlyWeather {
 	
 	@Column(length = 50)
 	private String status;
-
 	
+	
+	
+
 	
 	public HourlyWeatherID getId() {
 		return id;
@@ -30,7 +32,17 @@ public class HourlyWeather {
 	public void setId(HourlyWeatherID id) {
 		this.id = id;
 	}
+	
 
+	public int getHourOfDay() {
+	    return id.getHourOfDay();
+	}
+	
+	public void setHourOfDay(int hourOfDay) {
+	    id.setHourOfDay(hourOfDay);
+	}
+
+	
 	public int getTemperature() {
 		return temperature;
 	}
@@ -77,7 +89,7 @@ public class HourlyWeather {
 	
 	
 	public HourlyWeather id(Location location, int hour) {
-		this.id.setHourDay(hour);
+		this.id.setHourOfDay(hour);
 		this.id.setLocation(location);
 		return this;
 	}

@@ -1,11 +1,13 @@
 package com.skyapi.weatherforecast.hourly_weather.web.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
+@JsonPropertyOrder({"hourOfDay", "temperature", "precipitation", "status"})
 public class HourlyWeatherDto {
 
 	@JsonProperty("hour_of_day")
-	private int hourDay;
+	private int hourOfDay;
 	private int temperature;
 	private int precipitation;
 	private String status;
@@ -13,14 +15,13 @@ public class HourlyWeatherDto {
 	
 	
 	
-	
 
-	public int getHourDay() {
-		return hourDay;
+	public int getHourOfDay() {
+		return hourOfDay;
 	}
 
-	public void setHourDay(int hourDay) {
-		this.hourDay = hourDay;
+	public void setHourOfDay(int hourOfDay) {
+		this.hourOfDay = hourOfDay;
 	}
 
 	public int getTemperature() {

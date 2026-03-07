@@ -82,7 +82,8 @@ public class LocationApiControllerTest {
 
 		mockMvc.perform(get(END_POINT_PATH))
 		        .andExpect(status()
-				.isNoContent()).andDo(print());
+				.isNoContent())
+		        .andDo(print());
 	}
 
 	@Test
@@ -143,7 +144,7 @@ public class LocationApiControllerTest {
 	}
 
 	@Test
-	public void testGetShouldReturn4200Ok() throws Exception {
+	public void testGetShouldReturn200Ok() throws Exception {
 		
 		String code = "NYC_USA";
 		String requestURI = END_POINT_PATH + "/" + code;

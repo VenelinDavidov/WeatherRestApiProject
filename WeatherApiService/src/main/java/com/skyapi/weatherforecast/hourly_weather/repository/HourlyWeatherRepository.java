@@ -12,7 +12,7 @@ public interface HourlyWeatherRepository extends CrudRepository<HourlyWeather, H
 	
 	@Query("""
 			SELECT h FROM HourlyWeather h WHERE
-			h.id.location.code = ?1 AND h.id.hourDay > ?2
+			h.id.location.code = ?1 AND h.id.hourOfDay > ?2
 			AND h.id.location.trashed = false
 			""")
 	public List<HourlyWeather> findByLocationCode (String locationCode, int currentHour);

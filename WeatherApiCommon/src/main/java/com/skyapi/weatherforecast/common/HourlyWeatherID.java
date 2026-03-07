@@ -11,7 +11,7 @@ import jakarta.persistence.ManyToOne;
 public class HourlyWeatherID  implements Serializable{
  
 	@Column(name = "hour_of_day")
-	private int hourDay;
+	private int hourOfDay;
 	
 	@ManyToOne
 	@JoinColumn(name = "location_code")
@@ -22,23 +22,24 @@ public class HourlyWeatherID  implements Serializable{
 	public HourlyWeatherID() {}
 	
 	
-	public HourlyWeatherID(int hourDay, Location location) {
+	
+
+	public HourlyWeatherID(int hourOfDay, Location location) {
 		super();
-		this.hourDay = hourDay;
+		this.hourOfDay = hourOfDay;
 		this.location = location;
 	}
-	
-	
 
 
 
-	public int getHourDay() {
-		return hourDay;
+
+	public int getHourOfDay() {
+		return hourOfDay;
 	}
 
 
-	public void setHourDay(int hourDay) {
-		this.hourDay = hourDay;
+	public void setHourOfDay(int hourOfDay) {
+		this.hourOfDay = hourOfDay;
 	}
 
 
@@ -48,8 +49,5 @@ public class HourlyWeatherID  implements Serializable{
 	public void setLocation(Location location) {
 		this.location = location;
 	}
-	
-	
-	
-	
+
 }
