@@ -17,6 +17,7 @@ import com.skyapi.weatherforecast.common.Location;
 import com.skyapi.weatherforecast.hourly_weather.service.HourlyWeatherService;
 import com.skyapi.weatherforecast.hourly_weather.web.dto.HourlyWeatherDto;
 import com.skyapi.weatherforecast.hourly_weather.web.dto.HourlyWeatherListDto;
+import com.skyapi.weatherforecast.hourly_weather.web.exception.BadRequestException;
 import com.skyapi.weatherforecast.location.exceptions.GeoLocationException;
 import com.skyapi.weatherforecast.location.exceptions.LocationNotFoundException;
 import com.skyapi.weatherforecast.location.service.GeoLocationService;
@@ -95,10 +96,13 @@ public class HourlyWeatherAPIController {
      }
     
     
-    @PutMapping("/locationCode")
-    public ResponseEntity<?> updateHourlyForecast(@PathVariable("code") String locationCode,
-    	@RequestBody List<HourlyWeatherDto> listDto){
+    @PutMapping("/{locationCode}")
+    public ResponseEntity<?> updateHourlyForecast(@PathVariable("locationCode") String locationCode,
+    	@RequestBody List<HourlyWeatherDto> listDto) throws BadRequestException{
     	
+    	if(listDto.isEmpty()) {
+    		throw new BadRequestException("Hourly forecast data cannot be empty!");
+    	}
     	
     	return ResponseEntity.accepted().build();
     }

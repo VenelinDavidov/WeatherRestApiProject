@@ -5,23 +5,26 @@ import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.hamcrest.CoreMatchers.is;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.skyapi.weatherforecast.common.HourlyWeather;
 import com.skyapi.weatherforecast.common.Location;
 import com.skyapi.weatherforecast.hourly_weather.service.HourlyWeatherService;
 import com.skyapi.weatherforecast.hourly_weather.web.HourlyWeatherAPIController;
-
+import com.skyapi.weatherforecast.hourly_weather.web.dto.HourlyWeatherDto;
 import com.skyapi.weatherforecast.location.exceptions.GeoLocationException;
 import com.skyapi.weatherforecast.location.exceptions.LocationNotFoundException;
 import com.skyapi.weatherforecast.location.service.GeoLocationService;
@@ -35,6 +38,7 @@ public class HourlyWeatherApiControllerTests {
 	
 	@Autowired private MockMvc mockMvc;
 	@MockBean HourlyWeatherService hourlyWeatherService;
+	@Autowired ObjectMapper mapper;
 	@MockBean GeoLocationService locationService;
 	
 	
@@ -183,6 +187,22 @@ public class HourlyWeatherApiControllerTests {
 		.andExpect(content().contentType("application/json"))
 		.andExpect(jsonPath("$.location", is(location.toString())))
 	    .andExpect(jsonPath("$.hourly_forecast[0].hour_of_day", is(8)))
+		.andDo(print());
+	}
+	
+	
+	
+	@Test
+	public void testUpdateShouldReturn400BadRequestBecauseNoData() throws Exception {
+		
+		String requestURL = END_POINT_PATH + "/NYC_USA";
+		
+		List<HourlyWeatherDto> listDto = Collections.emptyList();
+		String requestBody = mapper.writeValueAsString(listDto);
+		
+		mockMvc.perform(put(requestURL).contentType(MediaType.APPLICATION_JSON).content(requestBody))
+		.andExpect(status().isBadRequest())
+		.andExpect(jsonPath("$.errors[0]", is("Hourly forecast data cannot be empty!")))
 		.andDo(print());
 	}
 }
