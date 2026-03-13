@@ -1,5 +1,6 @@
 package com.skyapi.weatherforecast.hourly_weather.service;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -56,11 +57,32 @@ public class HourlyWeatherService {
 	
 	
 	
-     public List<HourlyWeather> updateByLocationCode(String locationCode, List<HourlyWeather> hourlyForecastInRequest){
+     public List<HourlyWeather> updateByLocationCode(String locationCode, List<HourlyWeather> hourlyForecastInRequest) throws LocationNotFoundException{
 		
+    	 Location location = locationRepository.findByCode(locationCode);
     	  
-    	  
-    	  return Collections.emptyList();
+    	 if(location == null) {
+    		 throw new LocationNotFoundException("No location found with the given code:" + locationCode);
+    	 }
+    	 
+    	 for(HourlyWeather item : hourlyForecastInRequest) {
+    		 item.getId().setLocation(location);
+    	 }
+    	 
+    	 List<HourlyWeather> listHourlyWeatherDB = location.getListHourlyWeather();
+    	 List<HourlyWeather> hourlyWeatherToBeRemoved = new ArrayList<>();
+    	 
+    	 for(HourlyWeather item: hourlyForecastInRequest) {
+    		 if(!hourlyForecastInRequest.contains(item)) {
+    			 hourlyWeatherToBeRemoved.add(item);
+    		 }
+    	 }
+    	 
+    	 for (HourlyWeather item: hourlyWeatherToBeRemoved) {
+    		 listHourlyWeatherDB.remove(item);
+    	 }
+    	 
+    	  return (List<HourlyWeather>) hourlyWeatherRepository.saveAll(hourlyForecastInRequest);
 	}
 
 }

@@ -1,5 +1,7 @@
 package com.skyapi.weatherforecast.common;
 
+import java.util.Objects;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
@@ -71,6 +73,26 @@ public class HourlyWeather {
 	
 	
 	
+	@Override
+	public int hashCode() {
+		return Objects.hash(id);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		HourlyWeather other = (HourlyWeather) obj;
+		return Objects.equals(id, other.id);
+	}
+	
+	
+	
+
 	//Get fields and use them
 	public HourlyWeather temperature (int temp) {
 		setTemperature(temp);
@@ -92,5 +114,19 @@ public class HourlyWeather {
 		this.id.setHourOfDay(hour);
 		this.id.setLocation(location);
 		return this;
+	}
+
+	@Override
+	public String toString() {
+		return "HourlyWeather [hourofDay=" + id.getHourOfDay() + ", temperature=" + temperature + ", precipitation=" + precipitation
+				+ ", status=" + status + "]";
+	}
+	
+	
+	
+	public HourlyWeather getShadowCopy() {
+		HourlyWeather copy = new HourlyWeather();
+		copy.setId(this.id);
+		return copy;
 	}
 }

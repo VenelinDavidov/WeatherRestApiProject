@@ -205,4 +205,109 @@ public class HourlyWeatherApiControllerTests {
 		.andExpect(jsonPath("$.errors[0]", is("Hourly forecast data cannot be empty!")))
 		.andDo(print());
 	}
+	
+	
+	
+	@Test
+	public void testUpdateShouldReturn400BadRequestBecauseInvalidData() throws Exception {
+		
+		String requestURL = END_POINT_PATH + "/NYC_USA";
+		
+		HourlyWeatherDto dto1 = new HourlyWeatherDto()
+				.hourOfDay(102)
+				.temperature(233)
+				.precipitation(453)
+				.status("Sunny");
+		  
+		HourlyWeatherDto dto2 = new HourlyWeatherDto()
+				.hourOfDay(112)
+				.temperature(25523)
+				.precipitation(56)
+				.status("");
+		
+		List<HourlyWeatherDto> listDto = List.of(dto1,dto2);
+		String requestBody = mapper.writeValueAsString(listDto);
+		
+		mockMvc.perform(put(requestURL).contentType(MediaType.APPLICATION_JSON).content(requestBody))
+		.andExpect(status().isBadRequest())
+		.andDo(print());
+	}
+	
+	@Test
+	public void testUpdateShouldReturn404NotFound() throws Exception {
+		String locationCode = "NYC_USA";
+		String requestURL = END_POINT_PATH + "/NYC_USA";
+		
+		HourlyWeatherDto dto1 = new HourlyWeatherDto()
+				.hourOfDay(10)
+				.temperature(23)
+				.precipitation(70)
+				.status("Sunny");
+		  
+		
+		List<HourlyWeatherDto> listDto = List.of(dto1);
+		String requestBody = mapper.writeValueAsString(listDto);
+		
+		Mockito.when(hourlyWeatherService.updateByLocationCode(Mockito.eq(locationCode) , Mockito.anyList()))
+		                                                          .thenThrow(LocationNotFoundException.class);
+		
+		mockMvc.perform(put(requestURL).contentType(MediaType.APPLICATION_JSON).content(requestBody))
+		.andExpect(status().isNotFound())
+		.andDo(print());
+	}
+	 
+	
+	
+	
+	@Test
+	public void testUpdateShouldReturn200Ok() throws Exception {
+		String locationCode = "NYC_USA";
+		String requestURL = END_POINT_PATH + "/NYC_USA";
+		
+		HourlyWeatherDto dto1 = new HourlyWeatherDto()
+				.hourOfDay(10)
+				.temperature(23)
+				.precipitation(70)
+				.status("Sunny");
+		  
+		HourlyWeatherDto dto2 = new HourlyWeatherDto()
+				.hourOfDay(11)
+				.temperature(25)
+				.precipitation(56)
+				.status("Cloudy");
+		
+		Location location = new Location();
+		location.setCode(locationCode);
+		location.setCityName("New York City");
+		location.setRegionName("New York");
+		location.setCountryName("USA");
+		location.setCountryCode("US");
+		
+		HourlyWeather forecast1 = new HourlyWeather()
+				.id(location, 7)
+				.temperature(32)
+				.precipitation(40)
+				.status("Sunny");
+		
+		
+		HourlyWeather forecast2 = new HourlyWeather()
+				.id(location, 6)
+				.temperature(30)
+				.precipitation(45)
+				.status("Sunny");
+		
+		List<HourlyWeatherDto> listDto = List.of(dto1, dto2);
+		
+		var hourlyForecast = List.of(forecast1, forecast2);
+		String requestBody = mapper.writeValueAsString(listDto);
+		
+		Mockito.when(hourlyWeatherService.updateByLocationCode(Mockito.eq(locationCode) , Mockito.anyList()))
+		                                                          .thenReturn(hourlyForecast);
+		
+		mockMvc.perform(put(requestURL).contentType(MediaType.APPLICATION_JSON).content(requestBody))
+		.andExpect(status().isOk())
+		.andExpect(jsonPath("$.location", is(location.toString())))
+		.andExpect(jsonPath("$.hourly_forecast[0].hour_of_day", is(7)))
+		.andDo(print());
+	}
 }

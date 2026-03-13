@@ -1,6 +1,7 @@
 package com.skyapi.weatherforecast.common;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
@@ -48,6 +49,29 @@ public class HourlyWeatherID  implements Serializable{
 	}
 	public void setLocation(Location location) {
 		this.location = location;
+	}
+
+
+
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(hourOfDay, location);
+	}
+
+
+
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		HourlyWeatherID other = (HourlyWeatherID) obj;
+		return hourOfDay == other.hourOfDay && Objects.equals(location, other.location);
 	}
 
 }

@@ -2,6 +2,7 @@ package com.skyapi.weatherforecast.location.web;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,6 +24,8 @@ import com.skyapi.weatherforecast.hourly_weather.web.exception.BadRequestExcepti
 import com.skyapi.weatherforecast.location.web.dto.ErrorDTO;
 
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.ConstraintViolation;
+import jakarta.validation.ConstraintViolationException;
 
 @ControllerAdvice
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler{
@@ -67,7 +70,31 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler{
 	}
 
 	
+	@ExceptionHandler(ConstraintViolationException.class)
+	@ResponseStatus(HttpStatus.BAD_REQUEST)
+	@ResponseBody
+	public ErrorDTO handleConstraintViolationException(HttpServletRequest request, Exception exception)  {
+		
+		
+		ErrorDTO error = new ErrorDTO();
+		
+	    ConstraintViolationException violationException = (ConstraintViolationException) exception;
 	
+		error.setTimestamp(new Date());
+		error.setStatus(HttpStatus.BAD_REQUEST.value());
+		error.addError(exception.getMessage());
+		error.setPath(request.getServletPath());
+		
+		var constraintViolations = violationException.getConstraintViolations();
+		
+		constraintViolations.forEach(constraint -> {
+			error.addError(constraint.getPropertyPath() + ": " + constraint.getMessage());
+		});
+		
+		LOGGER.error(exception.getMessage(), exception);
+		
+		return error;
+	}
 	
 	@Override
 	protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex,
