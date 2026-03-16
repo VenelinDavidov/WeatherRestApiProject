@@ -100,7 +100,7 @@ public class HourlyWeatherAPIController {
      }
     
     
-    
+   
     
     @PutMapping("/{locationCode}")
     public ResponseEntity<?> updateHourlyForecast(@PathVariable("locationCode") String locationCode,

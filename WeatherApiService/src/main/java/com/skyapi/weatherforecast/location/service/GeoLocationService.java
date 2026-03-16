@@ -27,7 +27,7 @@ public class GeoLocationService {
 		}
 	}
 	
-	 
+	
 
 	public Location getLocation(String ipAddress) throws GeoLocationException {
 

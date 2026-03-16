@@ -21,6 +21,7 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import com.skyapi.weatherforecast.hourly_weather.web.exception.BadRequestException;
+import com.skyapi.weatherforecast.location.exceptions.LocationNotFoundException;
 import com.skyapi.weatherforecast.location.web.dto.ErrorDTO;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -49,7 +50,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler{
 		
 		return error;
 	}
-	
+
 	
 	
 	
@@ -69,6 +70,23 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler{
 		return error;
 	}
 
+	@ExceptionHandler(LocationNotFoundException.class)
+	@ResponseStatus(HttpStatus.NOT_FOUND)
+	@ResponseBody
+	public ErrorDTO handleNotFoundException(HttpServletRequest request, Exception exception)  {
+	
+		ErrorDTO error = new ErrorDTO();
+		error.setTimestamp(new Date());
+		error.setStatus(HttpStatus.NOT_FOUND.value());
+		error.addError(exception.getMessage());
+		error.setPath(request.getServletPath());
+		
+		LOGGER.error(exception.getMessage(), exception);
+		
+		return error;
+	}
+	
+	
 	
 	@ExceptionHandler(ConstraintViolationException.class)
 	@ResponseStatus(HttpStatus.BAD_REQUEST)

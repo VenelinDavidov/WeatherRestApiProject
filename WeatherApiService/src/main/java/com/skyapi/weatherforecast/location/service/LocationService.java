@@ -28,19 +28,29 @@ public class LocationService {
 		return repo.findUntrashed();
 	}
 
-	public Location get(String code) {
-		return repo.findByCode(code);
-	}
-
 	
-	public Location update(Location locationRequest) throws LocationNotFoundException {
+	
+	public Location get(String code) {
+		 Location location = repo.findByCode(code);
+		
+		if(location == null) {
+			throw new LocationNotFoundException(code);
+		}
+		return location;
+	}
+	
+	
+	
+	
+	
+	public Location update(Location locationRequest){
 
 		String code = locationRequest.getCode();
 
 		Location locationInDB = repo.findByCode(code);
 
 		if (locationInDB == null) {
-			throw new LocationNotFoundException("No location found with the given code!" + code);
+			throw new LocationNotFoundException(code);
 		}
 
 		locationInDB.setCityName(locationRequest.getCityName());
@@ -55,11 +65,11 @@ public class LocationService {
 	
 	
 	
-	public void delete(String code) throws LocationNotFoundException {
+	public void delete(String code)  {
 	   
 		Location location = repo.findByCode(code);
 		if (location == null) {
-			throw new LocationNotFoundException("No location found with the given code!" + code);
+			throw new LocationNotFoundException(code);
 		}
 		repo.trashByCode(code);
 	}
