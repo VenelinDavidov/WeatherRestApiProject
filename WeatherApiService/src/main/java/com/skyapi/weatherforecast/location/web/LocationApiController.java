@@ -4,7 +4,6 @@ import java.net.URI;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import com.skyapi.weatherforecast.location.exceptions.LocationNotFoundException;
 import com.skyapi.weatherforecast.location.service.LocationService;
 import com.skyapi.weatherforecast.location.web.dto.LocationDto;
 
@@ -41,7 +40,7 @@ public class LocationApiController {
 
 
 	@PostMapping
-	public ResponseEntity<LocationDto> addLocation(@RequestBody @Valid LocationDto dto) {
+	public ResponseEntity<Object> addLocation(@RequestBody @Valid LocationDto dto) {
 
 		Location addedLocation = locationService.add(dto2Entity(dto));
 		URI uri = URI.create("/v1/locations/" + addedLocation.getCode());

@@ -115,6 +115,7 @@ public class HourlyWeather {
 		this.id.setLocation(location);
 		return this;
 	}
+	
 
 	@Override
 	public String toString() {
