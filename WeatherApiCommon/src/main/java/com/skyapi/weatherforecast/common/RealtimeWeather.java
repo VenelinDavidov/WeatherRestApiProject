@@ -44,7 +44,7 @@ public class RealtimeWeather {
 	@Length(min =3, max =60, message = "Status must be in between 3-50 characters!	")
 	private String status;
 	
-	@JsonProperty("last_updated)")
+	@JsonProperty("last_updated")
 	private Date lastUpdated;
 	
 	@OneToOne
