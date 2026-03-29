@@ -20,8 +20,7 @@ public class WeatherService {
 
 	
 	
-	
-	
+
 	
 	public RealtimeWeather getRealtimeWeather() throws WeatherServiceException {
 

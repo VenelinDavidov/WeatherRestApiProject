@@ -10,11 +10,11 @@ public class RealtimeWeather {
 	private int temperature;
 	private int humidity;
 	private int precipitation;
-	
+//	@JsonProperty("wind_speed")
 	private int windSpeed;
 
 	private String status;
-
+//	@JsonProperty("last_updated")
 	private Date lastUpdated;
 
 	

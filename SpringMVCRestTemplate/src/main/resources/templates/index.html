@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather forecast demo</title>
+</head>
+
+<body>
+    <div class="weather-container">
+        <h2>Realtime Weather</h2>
+
+        <div class="weather-item">
+            Your location: <b>[[${weather.location}]]</b>
+        </div>
+
+        <div class="weather-item">
+            Temperature: <b>[[${weather.temperature}]]</b>
+        </div>
+
+        <div class="weather-item">
+            Humidity: <b>[[${weather.humidity}]]</b>
+        </div>
+
+        <div class="weather-item">
+            Precipitation: <b>[[${weather.precipitation}]]</b>
+        </div>
+
+        <div class="weather-item">
+           Wind Speed: <b>[[${weather.windSpeed}]]</b>
+        </div>
+
+        <div class="weather-item">
+            Status: <b>[[${weather.status}]]</b>
+        </div>
+
+        <div class="last-updated">
+            Last Updated: <b>[[${weather.lastUpdated}]]</b>
+        </div>
+    </div>
+</body>
+</html>
