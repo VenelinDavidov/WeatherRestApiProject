@@ -47,8 +47,11 @@ public class Location {
 	@PrimaryKeyJoinColumn
 	private RealtimeWeather realtimeWeather;
 	
-	@OneToMany(mappedBy = "id.location", cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "id.location", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<HourlyWeather> listHourlyWeather = new ArrayList<>();
+	
+	@OneToMany(mappedBy = "id.location", cascade = CascadeType.ALL)
+	private List<DailyWeather> listDailyWeather = new ArrayList<>();
 
 	
 	// empty constructor
@@ -167,5 +170,17 @@ public class Location {
 		setCode(code);
 		return this;
 	}
+
+
+	public List<DailyWeather> getListDailyWeather() {
+		return listDailyWeather;
+	}
+
+
+	public void setListDailyWeather(List<DailyWeather> listDailyWeather) {
+		this.listDailyWeather = listDailyWeather;
+	}
+	
+	
 	
 }
