@@ -10,6 +10,8 @@ import jakarta.persistence.ManyToOne;
 
 @Embeddable
 public class HourlyWeatherID  implements Serializable{
+	
+	
  
 	@Column(name = "hour_of_day")
 	private int hourOfDay;
