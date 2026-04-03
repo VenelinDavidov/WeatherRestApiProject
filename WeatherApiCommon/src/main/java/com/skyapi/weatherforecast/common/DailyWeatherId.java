@@ -17,6 +17,8 @@ public class DailyWeatherId implements Serializable {
 	@JoinColumn(name = "location_code")
 	private Location location;
 
+	
+	
 	public DailyWeatherId() {
 		
 	}

@@ -7,7 +7,9 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.ResponseEntity;
 
+import com.skyapi.weatherforecast.common.DailyWeather;
 import com.skyapi.weatherforecast.common.HourlyWeather;
+import com.skyapi.weatherforecast.daily.web.dto.DailyWeatherDto;
 import com.skyapi.weatherforecast.hourly_weather.web.dto.HourlyWeatherDto;
 
 
@@ -34,7 +36,12 @@ public class ApplicationBeanConfiguration {
 	      var typeMap2 = modelMapper.typeMap(HourlyWeatherDto.class, HourlyWeather.class);
 	      typeMap2.addMapping(model -> model.getHourOfDay(), (dest, value) -> dest.getId().setHourOfDay(value != null ? (int) value : 0));
 	      
-		 
+	      
+	      var typeMap3= modelMapper.typeMap(DailyWeather.class, DailyWeatherDto.class);
+	      typeMap3.addMapping(type -> type.getId().getDayOfMonth(), DailyWeatherDto::setDayOfMonth);
+	      typeMap3.addMapping(type -> type.getId().getMonth(),DailyWeatherDto::setMonth);
+	      
+	      
 		 return modelMapper;
 	}
     
