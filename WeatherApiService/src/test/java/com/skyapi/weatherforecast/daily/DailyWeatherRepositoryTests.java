@@ -8,11 +8,13 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.annotation.Rollback;
 import static org.assertj.core.api.Assertions.assertThat;
 
+import java.util.List;
 import java.util.Optional;
 
 import com.skyapi.weatherforecast.common.DailyWeather;
 import com.skyapi.weatherforecast.common.DailyWeatherId;
 import com.skyapi.weatherforecast.common.Location;
+import com.skyapi.weatherforecast.daily.repo.DailyWeatherRepository;
 
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = Replace.NONE)
@@ -55,5 +57,23 @@ public class DailyWeatherRepositoryTests {
 		Optional<DailyWeather> result = repo.findById(id);
 		
 		assertThat(result).isNotPresent();
+	}
+	
+	
+	
+	@Test
+	public void testFindByLocationCodeFound() {
+		String locationCode = "DELHI_IN";
+		 List<DailyWeather> dailyWeather = repo.findByLocationCode(locationCode);
+		
+		assertThat(dailyWeather).isNotEmpty();
+	}
+	
+	@Test
+	public void testFindByLocationCodeNotFound() {
+		String locationCode = "ACX_AS";
+		 List<DailyWeather> dailyWeather = repo.findByLocationCode(locationCode);
+		
+		assertThat(dailyWeather).isEmpty();
 	}
 }
