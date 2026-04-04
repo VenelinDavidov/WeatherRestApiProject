@@ -50,7 +50,7 @@ public class Location {
 	@OneToMany(mappedBy = "id.location", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<HourlyWeather> listHourlyWeather = new ArrayList<>();
 	
-	@OneToMany(mappedBy = "id.location", cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "id.location", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<DailyWeather> listDailyWeather = new ArrayList<>();
 
 	

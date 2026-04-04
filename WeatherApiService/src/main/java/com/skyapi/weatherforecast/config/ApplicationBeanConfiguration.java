@@ -40,9 +40,17 @@ public class ApplicationBeanConfiguration {
 	      var typeMap3= modelMapper.typeMap(DailyWeather.class, DailyWeatherDto.class);
 	      typeMap3.addMapping(type -> type.getId().getDayOfMonth(), DailyWeatherDto::setDayOfMonth);
 	      typeMap3.addMapping(type -> type.getId().getMonth(),DailyWeatherDto::setMonth);
-	      
-	      
-		 return modelMapper;
+
+
+		  var typeMap4 = modelMapper.typeMap (DailyWeatherDto.class, DailyWeather.class);
+
+		  typeMap4.addMapping (DailyWeatherDto::getDayOfMonth,
+				  (dest, value) -> dest.getId ().setDayOfMonth (value != null ? (int) value : 0));
+
+		  typeMap4.addMapping (DailyWeatherDto::getMonth,
+				(dest,value) -> dest.getId ().setMonth (value != null ? (int) value :0));
+
+		return modelMapper;
 	}
     
     

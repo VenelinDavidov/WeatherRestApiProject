@@ -1,13 +1,13 @@
 package com.skyapi.weatherforecast.daily.web;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import com.skyapi.weatherforecast.hourly_weather.web.exception.BadRequestException;
+import jakarta.validation.Valid;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.skyapi.weatherforecast.common.DailyWeather;
 import com.skyapi.weatherforecast.common.Location;
@@ -60,9 +60,36 @@ public class DailyWeatherController {
 		}
 		return ResponseEntity.ok(listEntity2DTO(dailyForecast)); 
 	}
-	
-	
-	
+
+
+    @PutMapping("/{locationCode}")
+	public ResponseEntity<?> updateDailyWeatherForecast(@PathVariable("locationCode") String code,
+														@RequestBody @Valid List<DailyWeatherDto> listDto) throws BadRequestException {
+
+		if (listDto.isEmpty ()){
+			throw new BadRequestException ("Daily forecast data cannot be empty!");
+		}
+
+		listDto.forEach (System.out::println);
+
+		List<DailyWeather> dailyWeathers = listDTO2ListEntity(listDto);
+
+		System.out.println ("======================");
+		List <DailyWeather> updatedForecast = dailyWeatherService.updateByLocationCode (code, dailyWeathers);
+
+		return ResponseEntity.ok (listEntity2DTO (updatedForecast));
+	}
+
+
+	private List <DailyWeather> listDTO2ListEntity(List <DailyWeatherDto> listDto) {
+		List<DailyWeather> listEntity = new ArrayList <> ();
+
+		listDto.forEach (dto -> {
+			listEntity.add (mapper.map (dto, DailyWeather.class));
+		});
+		return listEntity;
+	}
+
 
 	private DailyWeatherListDto listEntity2DTO(List<DailyWeather> dailyForecast) {
 
