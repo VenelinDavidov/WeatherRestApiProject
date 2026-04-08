@@ -69,10 +69,14 @@ public class DailyWeatherService {
 		}
 
 		for (DailyWeather data : dailyWeatherInRequest) {
-			data.getId ().setLocation (location);
+			if (data.getId () != null){
+				data.getId ().setLocation (location);
+			}
 		}
 
 		List <DailyWeather> dailyWeatherForDB = location.getListDailyWeather ();
+
+
 		List<DailyWeather> dailyWeatherToBeRemoved = new ArrayList <> ();
 
 		for (DailyWeather forecast : dailyWeatherForDB) {

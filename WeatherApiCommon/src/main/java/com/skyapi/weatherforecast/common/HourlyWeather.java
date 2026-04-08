@@ -98,7 +98,8 @@ public class HourlyWeather {
 		setTemperature(temp);
 		return this;
 	}
-	
+
+
 	public HourlyWeather precipitation (int prec) {
 		setPrecipitation(prec);
 		return this;

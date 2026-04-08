@@ -2,6 +2,7 @@ package com.skyapi.weatherforecast.daily;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.skyapi.weatherforecast.common.DailyWeatherId;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.modelmapper.ModelMapper;
@@ -12,6 +13,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static org.hamcrest.Matchers.containsString;
+import static org.mockito.ArgumentMatchers.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -168,7 +170,7 @@ public class DailyWeatherApiControllerTest {
 		String requestBody = objectMapper.writeValueAsString (listDto);
 
 		LocationNotFoundException ex = new LocationNotFoundException (locationCode);
-		when (dailyWeatherService.updateByLocationCode (Mockito.eq (locationCode), Mockito.anyList ())).thenThrow (ex);
+		when (dailyWeatherService.updateByLocationCode (eq (locationCode), Mockito.anyList ())).thenThrow (ex);
 
 		mockMvc.perform (put (requestURI).contentType (MediaType.APPLICATION_JSON).content (requestBody))
 				.andExpect (status ().isNotFound ())
@@ -203,6 +205,7 @@ public class DailyWeatherApiControllerTest {
 		location.setCountryCode("US");
 		location.setCountryName("USA");
 
+
 		DailyWeather forecast1 = new DailyWeather ()
 				.location (location)
 				.dayOfMonth (17)
@@ -211,6 +214,7 @@ public class DailyWeatherApiControllerTest {
 				.maxTemp (35)
 				.precipitation (52)
 				.status ("Sunny");
+
 
 		DailyWeather forecast2 = new DailyWeather ()
 				.location (location)
@@ -225,12 +229,15 @@ public class DailyWeatherApiControllerTest {
 		var dailyForecast = List.of (forecast1, forecast2);
 
 		String requestBody = objectMapper.writeValueAsString (listDto);
-		when (dailyWeatherService.updateByLocationCode (Mockito.eq (locationCode),Mockito.anyList ())).thenReturn (dailyForecast);
+		when(dailyWeatherService.updateByLocationCode( eq(locationCode), anyList() )).thenReturn(dailyForecast);
 
 		mockMvc.perform (put (requestURI).contentType (MediaType.APPLICATION_JSON).content (requestBody))
 				.andExpect (status ().isOk ())
 				.andExpect (jsonPath ("$.location", is (location.toString ())))
 				.andExpect (jsonPath ("$.daily_forecast[0].day_of_month", is (17)))
+				.andExpect(jsonPath("$.daily_forecast[0].month", is(7)))
+				.andExpect(jsonPath("$.daily_forecast[0].min_temp", is(25)))
+				.andExpect(jsonPath("$.daily_forecast[1].day_of_month", is(18)))
 				.andDo (print());
 	}
 	
