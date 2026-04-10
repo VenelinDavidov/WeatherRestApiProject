@@ -6,6 +6,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.skyapi.weatherforecast.daily.web.dto.DailyWeatherDto;
 import com.skyapi.weatherforecast.hourly_weather.web.dto.HourlyWeatherDto;
 import com.skyapi.weatherforecast.realtime.web.dto.RealtimeWeatherDTO;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,10 +18,15 @@ public class FullWeatherDTO {
     private String location;
 
     @JsonProperty("realtime_weather")
+    @Valid  @NotNull
     private RealtimeWeatherDTO realtimeWeather = new RealtimeWeatherDTO ();
+
     @JsonProperty("hourly_forecast")
+    @Valid
     private List <HourlyWeatherDto> listHourlyWeather = new ArrayList <> ();
+
     @JsonProperty("daily_forecast")
+    @Valid
     private List<DailyWeatherDto> listDailyWeather = new ArrayList <> ();
 
 
