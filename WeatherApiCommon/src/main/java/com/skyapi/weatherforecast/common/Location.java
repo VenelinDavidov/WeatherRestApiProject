@@ -180,7 +180,4 @@ public class Location {
 	public void setListDailyWeather(List<DailyWeather> listDailyWeather) {
 		this.listDailyWeather = listDailyWeather;
 	}
-	
-	
-	
 }
