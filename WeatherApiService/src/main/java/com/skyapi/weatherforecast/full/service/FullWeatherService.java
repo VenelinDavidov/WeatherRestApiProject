@@ -8,6 +8,7 @@ import com.skyapi.weatherforecast.location.exceptions.LocationNotFoundException;
 import com.skyapi.weatherforecast.location.repository.LocationRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -42,6 +43,8 @@ public class FullWeatherService {
         return location;
     }
 
+
+
     public Location update (String locationCode, Location locationInRequest){
 
         Location locationDB = repo.findByCode (locationCode);
@@ -51,6 +54,12 @@ public class FullWeatherService {
         }
         RealtimeWeather realtimeWeather = locationInRequest.getRealtimeWeather ();
         realtimeWeather.setLocation (locationDB);
+        realtimeWeather.setLastUpdated (new Date ());
+
+        if (locationDB.getRealtimeWeather () == null){
+            locationDB.setRealtimeWeather (realtimeWeather);
+            repo.save (locationDB);
+        }
 
         List <DailyWeather> listDailyWeather = locationInRequest.getListDailyWeather ();
         listDailyWeather.forEach (dw -> dw.getId ().setLocation (locationDB));
