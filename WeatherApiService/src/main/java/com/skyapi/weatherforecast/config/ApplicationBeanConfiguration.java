@@ -1,7 +1,9 @@
 package com.skyapi.weatherforecast.config;
 
 import com.skyapi.weatherforecast.common.Location;
+import com.skyapi.weatherforecast.common.RealtimeWeather;
 import com.skyapi.weatherforecast.full.web.dto.FullWeatherDTO;
+import com.skyapi.weatherforecast.realtime.web.dto.RealtimeWeatherDTO;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeMap;
 import org.modelmapper.convention.MatchingStrategies;
@@ -52,8 +54,11 @@ public class ApplicationBeanConfiguration {
 		  typeMap4.addMapping (DailyWeatherDto::getMonth,
 				(dest,value) -> dest.getId ().setMonth (value != null ? (int) value :0));
 
-		  var typemap5 = modelMapper.typeMap (Location.class, FullWeatherDTO.class);
-		  typemap5.addMapping (Location::toString, FullWeatherDTO::setLocation);
+		  var typeMap5 = modelMapper.typeMap (Location.class, FullWeatherDTO.class);
+		  typeMap5.addMapping (Location::toString, FullWeatherDTO::setLocation);
+
+		  var typeMap6 = modelMapper.typeMap (RealtimeWeatherDTO.class, RealtimeWeather.class);
+		  typeMap6.addMappings (m -> m.skip (RealtimeWeather::setLocation));
 
 		return modelMapper;
 	}

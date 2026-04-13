@@ -1,5 +1,6 @@
 package com.skyapi.weatherforecast.full.web;
 
+
 import com.skyapi.weatherforecast.common.Location;
 import com.skyapi.weatherforecast.full.service.FullWeatherService;
 import com.skyapi.weatherforecast.full.web.dto.FullWeatherDTO;
@@ -55,6 +56,7 @@ public class FullWeatherApiController {
         return ResponseEntity.ok (entity2Dto (locationInDB));
     }
 
+
     @PutMapping("/{locationCode}")
     public ResponseEntity<?> updateFullWeather (@PathVariable String locationCode,
                                                 @RequestBody @Valid FullWeatherDTO dto) throws BadRequestException {
@@ -66,7 +68,11 @@ public class FullWeatherApiController {
             throw new BadRequestException ("Daily weather data cannot be empty!");
         }
 
-        return null;
+        Location locationInRequest = dto2Entity (dto);
+
+        Location updateLocation = weatherService.update (locationCode, locationInRequest);
+
+        return ResponseEntity.ok (entity2Dto (updateLocation));
     }
 
 
@@ -76,4 +82,32 @@ public class FullWeatherApiController {
 
         return dto;
     }
+
+    public Location dto2Entity(FullWeatherDTO dto){
+        return modelMapper.map (dto, Location.class);
+    }
+
+//    public Location dto2Entity(FullWeatherDTO  dto){
+//
+//        return Location.builder()
+//                .locationCode(dto.getLocationCode())
+//                .listHourlyWeather(
+//                        dto.getListHourlyWeather().stream()
+//                                .map(hw -> HourlyWeather.builder()
+//                                        .temperature(hw.getTemperature())
+//                                        .time(hw.getTime())
+//                                         .precipitation(hw.getPrecipitation))
+//                                        .build())
+//                                .toList())
+//                .listDailyWeather(
+//                        dto.getListDailyWeather().stream()
+//                                .map(dw -> DailyWeather.builder()
+//                                        .minTemp(dw.getMinTemp())
+//                                        .maxTemp(dw.getMaxTemp())
+//                                        .date(dw.getDate())
+//                                        .build())
+//                                .toList()
+//                )
+//                .build();
+//    }
 }
