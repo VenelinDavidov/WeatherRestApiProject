@@ -49,7 +49,6 @@ public class LocationApiController {
 	}
 	
 	
-	
 
 	@GetMapping
 	public ResponseEntity<?> listLocation() {
