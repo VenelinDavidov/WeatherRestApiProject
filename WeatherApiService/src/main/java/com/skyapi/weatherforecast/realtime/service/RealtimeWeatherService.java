@@ -61,7 +61,7 @@ public class RealtimeWeatherService {
 		Location location = locationRepository.findByCode(locationCode);
 		
 		if(location == null ) {
-			throw new LocationNotFoundException("No location found witn given code: " + locationCode);
+			throw new LocationNotFoundException("No location found with given code: " + locationCode);
 		}
 		
 		realtimeWeather.setLocation(location);
