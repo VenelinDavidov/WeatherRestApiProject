@@ -1,24 +1,13 @@
 package com.skyapi.weatherforecast.location.web.dto;
 
-import java.util.ArrayList;
-import java.util.List;
 
+
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import org.hibernate.validator.constraints.Length;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.skyapi.weatherforecast.common.HourlyWeather;
-import com.skyapi.weatherforecast.common.RealtimeWeather;
-
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Column;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.OneToOne;
-import jakarta.persistence.PrimaryKeyJoinColumn;
 import jakarta.validation.constraints.NotNull;
-
+@JsonPropertyOrder({"code", "city_name", "region_name", "country_code", "country_name", "enabled"})
 public class LocationDto {
 	
 	
