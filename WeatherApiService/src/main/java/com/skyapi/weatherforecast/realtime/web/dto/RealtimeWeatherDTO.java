@@ -4,11 +4,13 @@ import java.util.Date;
 
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import jakarta.validation.constraints.NotBlank;
 import org.hibernate.validator.constraints.Range;
+import org.springframework.hateoas.RepresentationModel;
 
-
-public class RealtimeWeatherDTO {
+@JsonPropertyOrder({"location", "temperature", "humidity", "precipitation", "wind_speed", "status", "last_updated"})
+public class RealtimeWeatherDTO extends RepresentationModel<RealtimeWeatherDTO> {
 
 
 	private String location;
@@ -22,7 +24,7 @@ public class RealtimeWeatherDTO {
 	@Range(min = 0, max = 100)
 	private int precipitation;
 
-	@JsonProperty("win_speed")
+	@JsonProperty("wind_speed")
 	private int windSpeed;
 
 	@NotBlank(message = "Status must not be empty!")

@@ -65,13 +65,13 @@ public class MainController {
 
         String dailyForecastByIpUrl = WebMvcLinkBuilder
                 .linkTo (WebMvcLinkBuilder.methodOn (DailyWeatherController.class)
-                .listDailyForecastByIPAdress (null))
+                .listDailyForecastByIPAddress (null))
                 .toString ();
         entity.setDailyForecastByIpUrl (dailyForecastByIpUrl);
 
         String dailyForecastByCodeUrl = WebMvcLinkBuilder
                 .linkTo (WebMvcLinkBuilder.methodOn (DailyWeatherController.class)
-                .listHourlyForecastByLocationCode (null))
+                .listDailyForecastByLocationCode (null))
                 .toString ();
         entity.setDailyForecastByCodeUrl (dailyForecastByCodeUrl);
 
