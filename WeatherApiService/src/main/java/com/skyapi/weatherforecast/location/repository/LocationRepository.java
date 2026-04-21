@@ -2,17 +2,23 @@ package com.skyapi.weatherforecast.location.repository;
 
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import com.skyapi.weatherforecast.common.Location;
+import org.springframework.data.repository.ListPagingAndSortingRepository;
 
 
-
-public interface LocationRepository extends CrudRepository<Location, String> {
+public interface LocationRepository extends CrudRepository<Location, String>, ListPagingAndSortingRepository<Location, String> {
 
 	@Query("SELECT l FROM Location l WHERE l.trashed = false")
-	public List<Location> findUntrashed();
+	@Deprecated
+	List<Location> findUntrashed();
+
+	@Query("SELECT l FROM Location l WHERE l.trashed = false")
+	public  Page <Location> findUntrashed(Pageable pageable);
 	
 	@Query("SELECT l FROM Location l WHERE l.trashed = false AND l.code = ?1")
 	public Location findByCode(String code);

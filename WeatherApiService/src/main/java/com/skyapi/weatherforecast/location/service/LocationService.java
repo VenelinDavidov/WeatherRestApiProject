@@ -5,6 +5,10 @@ import java.util.List;
 import com.skyapi.weatherforecast.location.exceptions.LocationNotFoundException;
 import com.skyapi.weatherforecast.location.repository.LocationRepository;
 import jakarta.transaction.Transactional;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import com.skyapi.weatherforecast.common.Location;
@@ -24,7 +28,8 @@ public class LocationService {
 		return repo.save(location);
 	}
 
-	public List<Location> list() {
+	@Deprecated
+    public List<Location> list() {
 		return repo.findUntrashed();
 	}
 
@@ -40,7 +45,13 @@ public class LocationService {
 	}
 	
 	
-	
+	public Page <Location> listByPage(int pageNum, int pageSize, String  sortFeild){
+
+		Sort sort = Sort.by (sortFeild).ascending ();
+		Pageable pageable = PageRequest.of (pageNum, pageSize, sort);
+
+		return repo.findUntrashed (pageable);
+	}
 	
 	
 	public Location update(Location locationRequest){

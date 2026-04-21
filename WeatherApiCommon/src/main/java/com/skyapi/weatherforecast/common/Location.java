@@ -99,7 +99,7 @@ public class Location {
 
 	@Override
 	public String toString() {
-		return cityName + ", " + (regionName != null ? regionName + ", " : "") + countryName;
+		return  code + " => " + cityName + ", " + (regionName != null ? regionName + ", " : "") + countryName;
 	}
 
 	public String getCode() {

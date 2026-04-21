@@ -8,15 +8,9 @@ import com.skyapi.weatherforecast.location.service.LocationService;
 import com.skyapi.weatherforecast.location.web.dto.LocationDto;
 
 import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.skyapi.weatherforecast.common.Location;
 
@@ -50,7 +44,7 @@ public class LocationApiController {
 	
 	
 
-	@GetMapping
+	@Deprecated
 	public ResponseEntity<?> listLocation() {
 
 		List<Location> locations = locationService.list();
@@ -60,7 +54,23 @@ public class LocationApiController {
 		}
 		return ResponseEntity.ok(listEntity2ListDto(locations));
 	}
-	
+
+
+	@GetMapping
+	public ResponseEntity<?> listLocations(@RequestParam (value = "page", required = false, defaultValue = "1") Integer pageNum,
+										   @RequestParam (value = "size", required = false, defaultValue = "4") Integer pageSize,
+										   @RequestParam (value = "sort", required = false, defaultValue = "code") String sortField) {
+
+		Page <Location> page = locationService.listByPage (pageNum - 1, pageSize, sortField);
+
+		List <Location> locations = page.getContent ();
+
+		if (locations.isEmpty()) {
+			return ResponseEntity.noContent().build();
+		}
+		return ResponseEntity.ok(listEntity2ListDto(locations));
+	}
+
 	
 	@GetMapping("/{code}")
 	public ResponseEntity<?> getLocation(@PathVariable("code") String code) {
