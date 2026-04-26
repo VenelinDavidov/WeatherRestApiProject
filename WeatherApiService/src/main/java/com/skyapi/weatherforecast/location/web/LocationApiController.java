@@ -7,16 +7,15 @@ import java.util.stream.Collectors;
 import com.skyapi.weatherforecast.location.service.LocationService;
 import com.skyapi.weatherforecast.location.web.dto.LocationDto;
 
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
 import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.Page;
+import org.springframework.hateoas.CollectionModel;
+import org.springframework.hateoas.PagedModel;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
 
 import com.skyapi.weatherforecast.common.Location;
 
@@ -24,6 +23,7 @@ import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/v1/locations")
+@Validated
 public class LocationApiController {
 
 	private LocationService locationService;
@@ -50,7 +50,7 @@ public class LocationApiController {
 	
 	
 
-	@GetMapping
+	@Deprecated
 	public ResponseEntity<?> listLocation() {
 
 		List<Location> locations = locationService.list();
@@ -60,8 +60,42 @@ public class LocationApiController {
 		}
 		return ResponseEntity.ok(listEntity2ListDto(locations));
 	}
-	
-	
+
+
+	@GetMapping
+	public ResponseEntity<?> listLocations(@RequestParam (value = "page", required = false, defaultValue = "1")
+											 @Min(value = 1)  Integer pageNum,
+
+										   @RequestParam (value = "size", required = false, defaultValue = "4")
+										     @Min (value = 1) @Max(value = 20) Integer pageSize,
+
+										   @RequestParam (value = "sort", required = false, defaultValue = "code") String sortField) {
+
+		Page <Location> page = locationService.listByPage (pageNum - 1, pageSize, sortField);
+
+		List <Location> locations = page.getContent ();
+
+		if (locations.isEmpty()) {
+			return ResponseEntity.noContent().build();
+		}
+		return ResponseEntity.ok( listEntity2ListDto(locations));
+	}
+
+//	private CollectionModel <LocationDto> addPageMetadataAndLinks2Collection(List <LocationDto> listDto, Page <Location> page) {
+//
+//		int pageSize =  page.getSize ();
+//		int pageNum = page.getNumber () + 1;
+//
+//		long totalElements = page.getTotalElements ();
+//
+//		PagedModel.PageMetadata pageMetaData = new PagedModel.PageMetadata (pageSize, pageNum, totalElements);
+//
+//		CollectionModel<LocationDto> collectionModel = PagedModel.of (listDto, pageMetaData);
+//
+//		return collectionModel;
+//	}
+
+
 	@GetMapping("/{code}")
 	public ResponseEntity<?> getLocation(@PathVariable("code") String code) {
 
@@ -97,11 +131,11 @@ public class LocationApiController {
 	}
       
       
-      private List<Object> listEntity2ListDto(List<Location> listEntity){
+      private List <Object> listEntity2ListDto(List<Location> listEntity){
     	  return listEntity
     			  .stream()
-    			  .map(entity -> entity2Dto(entity))
-    			  .collect(Collectors.toList());
+    			  .map(this::entity2Dto)
+    			  .collect(Collectors.toList()).reversed ();
       }
 
 
