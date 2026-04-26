@@ -45,9 +45,9 @@ public class LocationService {
 	}
 	
 	
-	public Page <Location> listByPage(int pageNum, int pageSize, String  sortFeild){
+	public Page <Location> listByPage(int pageNum, int pageSize, String  sortField){
 
-		Sort sort = Sort.by (sortFeild).ascending ();
+		Sort sort = Sort.by (sortField).ascending ();
 		Pageable pageable = PageRequest.of (pageNum, pageSize, sort);
 
 		return repo.findUntrashed (pageable);

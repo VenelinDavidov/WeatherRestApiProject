@@ -7,8 +7,10 @@ import org.hibernate.validator.constraints.Length;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.NotNull;
+import org.springframework.hateoas.CollectionModel;
+
 @JsonPropertyOrder({"code", "city_name", "region_name", "country_code", "country_name", "enabled"})
-public class LocationDto {
+public class LocationDto extends CollectionModel<LocationDto> {
 	
 	
 	@NotNull(message = "Location code cannot be null!")
